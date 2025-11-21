@@ -1,0 +1,16 @@
+# Permitir acceso a todos los crawlers
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://hervin.com/sitemap.xml
+
+# Bloquear rutas administrativas si existieran
+# Disallow: /admin/
+# Disallow: /private/
+
+# Permitir crawling de recursos estáticos
+Allow: /images/
+Allow: /fonts/
+Allow: /*.css$
+Allow: /*.js$

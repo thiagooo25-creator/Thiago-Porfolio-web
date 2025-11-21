@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Contacto — Thiago</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Contacta conmigo para tu próximo proyecto digital">
+<style>
+  :root{
+    --bg:#0e0e0e; --card:#0b0b0b; --text:#fff; --dim:#9b9b9b;
+    --accent:#ffffff; --glass: rgba(255,255,255,0.03); --glass-2: rgba(255,255,255,0.02);
+    --maxw:1200px; --ease:cubic-bezier(.2,.9,.3,1);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;
+    overflow-x:hidden; cursor: none;
+  }
+
+  /* ---------- loader & cursor ---------- */
+  .page-loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:9999;transition:opacity .35s}
+  .page-loader.hidden{opacity:0;visibility:hidden}
+  .dots{display:flex;gap:10px}
+  .dots span{width:10px;height:10px;border-radius:50%;background:var(--accent);opacity:.18;animation:pl .9s infinite}
+  .dots span:nth-child(2){animation-delay:.12s} .dots span:nth-child(3){animation-delay:.24s}
+  @keyframes pl{0%{transform:translateY(0);opacity:.18}50%{transform:translateY(-8px);opacity:1}100%{transform:translateY(0);opacity:.18}}
+
+  .custom-cursor{position:fixed;left:0;top:0;width:18px;height:18px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .18s ease,height .18s ease,transform .12s ease}
+  .custom-cursor.big{width:56px;height:56px;opacity:1}
+
+  /* ---------- nav ---------- */
+  .main-nav{position:fixed;top:0;left:0;width:100%;padding:28px 44px;display:flex;align-items:center;justify-content:space-between;z-index:1100;mix-blend-mode:difference}
+  .nav-logo a{color:var(--text);text-decoration:none;font-weight:600;letter-spacing:3px}
+  .menu-toggle{background:none;border:0;display:flex;flex-direction:column;gap:8px;cursor:pointer}
+  .menu-toggle span{width:30px;height:2px;background:#fff}
+  .nav-menu{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;opacity:0;visibility:hidden;transition:opacity .4s}
+  .nav-menu.active{opacity:1;visibility:visible}
+  .nav-menu a{color:#fff;text-decoration:none;font-size:40px;font-weight:300;}
+
+/* ---------- page wrapper ---------- */
+  main{padding-top:110px;max-width:var(--maxw);margin:0 auto;padding-left:5vw;padding-right:5vw}
+
+/* ---------- hero small ---------- */
+  .contact-hero{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:36px;gap:18px}
+  .contact-hero h1{font-weight:300;font-size:48px;letter-spacing:-1px;margin:0}
+  .contact-hero p{max-width:72ch;color:var(--dim);margin:0;font-size:16px}
+
+/* ---------- grid ---------- */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}
+  .left, .right{background:var(--glass);border:1px solid rgba(255,255,255,0.04);padding:28px;border-radius:14px;backdrop-filter: blur(6px)}
+  .left h2{margin-top:0;font-weight:400}
+  .contact-item{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+  .contact-item:last-child{border-bottom:0}
+  .contact-item svg{flex:0 0 36px;opacity:.9}
+  .contact-item strong{display:block;font-weight:600}
+  .contact-item p{margin:0;color:var(--dim);font-size:14px}
+
+/* ---------- form ---------- */
+  form .form-row{display:flex;gap:16px}
+  .form-group{display:flex;flex-direction:column;margin-bottom:14px}
+  .form-group label{font-size:13px;margin-bottom:8px;color:var(--dim)}
+  input[type="text"], input[type="email"], textarea{
+    background:transparent;border:1px solid rgba(255,255,255,0.06);padding:12px 14px;border-radius:10px;color:var(--text);font-size:14px;outline:none;transition:box-shadow .18s ease, border-color .18s}
+  input:focus,textarea:focus{box-shadow:0 6px 30px rgba(0,0,0,0.6);border-color:var(--accent)}
+  textarea{resize:vertical;min-height:140px}
+
+/* Centered back-wrap */
+  .back-wrap{max-width:var(--maxw);margin:44px auto 0;padding:0 6vw;text-align:center}
+
+/* ---------- extras ---------- */
+  .small-note{color:var(--dim);font-size:13px;margin-top:8px}
+  .form-message{margin-top:12px;font-size:14px;color:var(--accent);display:none}
+
+/* reveal utils */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .reveal.visible{opacity:1;transform:none}
+  .delay-1{transition-delay:.12s}.delay-2{transition-delay:.24s}.delay-3{transition-delay:.38s}
+
+/* footer */
+  footer{padding:42px 5vw;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;margin-top:48px}
+  footer a{color:var(--dim);text-decoration:none;font-size:13px}
+
+/* responsive */
+  @media (max-width:980px){
+    .contact-grid{grid-template-columns:1fr;gap:22px}
+    .contact-hero h1{font-size:36px}
+    .nav-menu a{font-size:28px}
+  }
+
+  @media (max-width:600px){
+    body{cursor:auto}
+    .custom-cursor{display:none}
+    main{padding-left:5vw;padding-right:5vw}
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- loader + cursor -->
+  <div id="pageLoader" class="page-loader" role="status" aria-hidden="false"><div class="dots"><span></span><span></span><span></span></div></div>
+  <div class="custom-cursor" id="cursor"></div>
+
+  <!-- Updated navigation with menu toggle -->
+    <nav class="main-nav" role="navigation" aria-label="Principal">
+        <div class="nav-logo"><a href="index.html">THIAGO</a></div>
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+  <!-- main -->
+  <main id="pageContent">
+    <section class="contact-hero reveal delay-1">
+      <h1>Hablemos — llevemos tu proyecto adelante</h1>
+      <p>Si te gustó mi trabajo y querés colaborar, escribime. Me adapto a equipos, marcas y startups — trabajo en branding, packaging e interfaces.</p>
+    </section>
+
+    <section class="contact-grid" aria-labelledby="contact-heading">
+      <!-- left: info -->
+      <div class="left reveal delay-2" id="contact-info">
+        <h2 id="contact-heading">Información</h2>
+
+        <div class="contact-item" title="Email">
+            <!-- email icon -->
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+              <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 6L12 13L2 6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          <div>
+            <strong>Email</strong>
+            <p>thiagojesusamaralfernandez@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="contact-item" title="Whatsapp">
+          <!-- phone icon -->
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+              <path d="M22 16.92V21C22 21.55 21.55 22 21 22C10.5 22 2 13.5 2 3C2 2.45 2.45 2 3 2H7.09C7.58 2 8.03 2.23 8.29 2.65L10.1 5.41C10.36 5.83 10.3 6.39 9.97 6.73L8.5 8.2C9.95 11.06 12.94 14.05 15.8 15.5L17.27 13.99C17.61 13.66 18.17 13.6 18.59 13.86L21.35 15.67C21.77 15.93 22 16.38 22 16.87V16.92Z" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          <div>
+            <strong>WhatsApp</strong>
+            <p><a href="https://wa.me/59897183394" target="_blank" style="color:inherit;text-decoration:none">+598 97 183 394</a></p>
+          </div>
+        </div>
+
+        <div class="contact-item" title="Ubicación">
+          <!-- map pin -->
+           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+    <path d="M12 22s8-6.28 8-12A8 8 0 0 0 4 10c0 5.72 8 12 8 12z" 
+          stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="12" cy="10" r="3" 
+            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+          <div>
+            <strong>Ubicación</strong>
+            <p>Paysandú, Uruguay</p>
+          </div>
+        </div>
+
+        <p class="small-note" style="margin-top:18px">
+          También podés enviarme un mensaje por Instagram si preferís respuestas rápidas.
+        </p>
+      </div>
+
+      <!-- right: form -->
+      <div class="right reveal delay-3">
+        <form id="contactForm" novalidate>
+          <div style="display:flex;gap:12px;margin-bottom:12px">
+            <div style="flex:1">
+              <label for="name" style="display:block;font-size:13px;margin-bottom:8px;color:var(--dim)">Nombre *</label>
+              <input id="name" name="name" type="text" required />
+            </div>
+            <div style="flex:1">
+              <label for="email" style="display:block;font-size:13px;margin-bottom:8px;color:var(--dim)">Email *</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px">
+            <label for="subject" style="display:block;font-size:13px;margin-bottom:8px;color:var(--dim)">Asunto</label>
+            <input id="subject" name="subject" type="text" />
+          </div>
+
+          <div style="margin-bottom:12px">
+            <label for="message" style="display:block;font-size:13px;margin-bottom:8px;color:var(--dim)">Mensaje *</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;margin-top:6px">
+            <button type="submit" class="btn-primary">Enviar Mensaje</button>
+            <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
+          </div>
+
+          <p class="small-note" style="margin-top:14px;color:var(--dim)">Al enviar, aceptás que te contacte para coordinar el proyecto.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ATRÁS (centrado y ordenado) -->
+  <div class="back-wrap">
+    <a href="index.html" class="btn-primary" aria-label="Volver">Atrás</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+      <div class="footer-left">
+          <p>&copy; 2025 Portfolio. All rights reserved.</p>
+      </div>
+      <div class="footer-right">
+          <a href="aviso-legal.html">Legal</a>
+          <a href="https://instagram.com/thiagooo_25" target="_blank">Instagram</a>
+          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+      </div>
+  </footer>
+
+<script src="script.js"></script>
+
+<script>
+/* ---------- loader ---------- */
+window.addEventListener('load', ()=> {
+  const loader = document.getElementById('pageLoader');
+  setTimeout(()=> loader.classList.add('hidden'), 220);
+});
+
+/* ---------- cursor ---------- */
+const cursor = document.getElementById('cursor');
+if (cursor) {
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  /* enlarge on interactive elements */
+  document.addEventListener('mouseover', e => {
+    if(e.target.closest('a,button,input,textarea,.contact-item')) cursor.classList.add('big');
+  });
+  document.addEventListener('mouseout', e => {
+    if(!e.target.closest('a,button,input,textarea,.contact-item')) cursor.classList.remove('big');
+  });
+}
+
+/* ---------- menu toggle ---------- */
+const menuToggle = document.getElementById('menuToggle'), navMenu = document.getElementById('navMenu');
+if (menuToggle && navMenu) {
+  menuToggle.addEventListener('click', ()=>{
+    const open = navMenu.classList.toggle('active');
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    navMenu.setAttribute('aria-hidden', !open);
+  });
+}
+
+/* ---------- reveal on scroll ---------- */
+const observer = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      obs.unobserve(entry.target);
+    }
+  });
+},{threshold: 0.22});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ---------- simple form handling (no backend) ---------- */
+const form = document.getElementById('contactForm'), formMessage = document.getElementById('formMessage');
+if(form){
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    // basic validation
+    const name = form.name.value.trim(), email = form.email.value.trim(), message = form.message.value.trim();
+    if(!name || !email || !message){
+      formMessage.style.display = 'block'; formMessage.style.color = '#ff7676'; formMessage.textContent = 'Completá los campos obligatorios.';
+      return;
+    }
+    // simulate send
+    formMessage.style.display = 'block'; formMessage.style.color = 'var(--accent)'; formMessage.textContent = 'Enviando...';
+    setTimeout(()=>{
+      formMessage.style.color = 'var(--accent)'; formMessage.textContent = 'Mensaje enviado — te respondo pronto.';
+      form.reset();
+    }, 900);
+  });
+}
+
+/* ---------- AJAX links small enhancement (optional) ---------- */
+document.addEventListener('click', e=>{
+  const a = e.target.closest('a[data-ajax="true"]');
+  if(!a) return;
+  const href = a.href;
+  if(href && href.indexOf(location.origin) === 0){
+    e.preventDefault();
+    location.href = href;
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thiago Portfolio</title>
+
+  <style>
+    @import 'tailwindcss';
+    @import 'tw-animate-css';
+
+    /* ===================== IMPORT FONTS ===================== */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0e0e0e; color: #fff; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+
+
+/* ================================
+   Navigation
+   ================================ */
+.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  mix-blend-mode: difference;
+}
+
+.nav-logo a {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 3px;
+}
+
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: none;
+  padding: 10px;
+}
+
+.menu-toggle span {
+  width: 35px;
+  height: 1px;
+  background: #fff;
+  transition: var(--transition);
+}
+
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+.nav-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  list-style: none;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.nav-menu.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-menu li {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.nav-menu.active li {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-menu.active li:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.nav-menu.active li:nth-child(2) {
+  transition-delay: 0.15s;
+}
+.nav-menu.active li:nth-child(3) {
+  transition-delay: 0.2s;
+}
+.nav-menu.active li:nth-child(4) {
+  transition-delay: 0.25s;
+}
+.nav-menu.active li:nth-child(5) {
+  transition-delay: 0.3s;
+}
+
+.nav-menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  transition: color 0.3s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  color: var(--color-accent);
+}
+
+
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 80px;
+      background: #fff;
+      margin-top: 20px;
+      animation: scroll-down 2s infinite;
+    }
+
+    @keyframes scroll-down {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* Section styling */
+    .section {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: 1s ease;
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* IMAGE BLOCK */
+    .work-item {
+      width: 70%;
+      height: 70vh;
+      overflow: hidden;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .work-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1);
+      transition: transform 1s ease;
+    }
+
+    .work-item:hover img {
+      transform: scale(1.15);
+    }
+
+    /* Text description */
+    .description {
+      margin-top: 30px;
+      max-width: 800px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 0.8s ease;
+    }
+
+    .section.visible .description {
+      opacity: 1;
+      transform: translateY(0);
+    }
+/* ====== WORK ITEM 3D STYLE ====== */
+.work-item {
+  perspective: 1500px;
+  overflow: hidden;
+  border-radius: 20px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.work-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.work-item:hover img {
+  scale: 1.1;
+}
+
+/* ================================
+   Custom Cursor - Blend Mode
+   ================================ */
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: difference;
+  transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+
+.custom-cursor.hover {
+  width: 60px;
+  height: 60px;
+}
+
+.custom-cursor-follower {
+  display: none;
+}
+
+    /* Ocultar scrollbar */
+    ::-webkit-scrollbar { width: 0; height: 0; }
+    html { scrollbar-width: none; -ms-overflow-style: none; }
+
+    /* ================= LIGHTBOX ================= */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 5000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(5px);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox-img {
+      max-width: 85%;
+      max-height: 85%;
+      border-radius: 10px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.7);
+      animation: zoomIn 0.4s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      font-size: 50px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .lightbox-close:hover { opacity: 0.6; }
+    /* ===============================
+   HERO SCROLL BLUR / ZOOM EFFECT
+   =============================== */
+
+#hero {
+  position: relative;
+  overflow: hidden;
+}
+
+#hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(0px);
+  transform: scale(1);
+  opacity: 1;
+  transition: none;
+  z-index: -1;
+}
+/* Navigation Arrows */
+.slider-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  transition: var(--transition);
+  color: #fff;
+}
+
+.slider-nav:hover {
+  background: #fff;
+  color: #111;
+  border-color: #fff;
+}
+
+.slider-nav.prev {
+  left: 60px;
+}
+
+.slider-nav.next {
+  right: 60px;
+}
+
+/* Slide Counter */
+.slider-counter {
+  position: fixed;
+  bottom: 60px;
+  right: 60px;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  z-index: 100;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+
+/* ================================
+   Other Sections
+   ================================ */
+.page-content {
+  min-height: 100vh;
+}
+
+.section-standard {
+  padding: 150px 60px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 60px;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+}
+
+.section-subtitle {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--color-text-dim);
+  margin-bottom: 80px;
+  letter-spacing: 1px;
+}
+
+/* Footer */
+.main-footer {
+  padding: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-left p {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  letter-spacing: 1px;
+}
+
+.footer-right {
+  display: flex;
+  gap: 40px;
+}
+
+.footer-right a {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+.back-wrap {
+  width: 100%;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+  margin: 80px 0;
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+     <div class="custom-cursor"></div>
+</head>
+<body>
+  <!-- Updated navigation with menu toggle -->
+    <nav class="main-nav">
+        <div class="nav-logo">
+            <a href="index.html">THIAGO</a>
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+         <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="portfolio.html" class="active">Packaging</a></li>
+        <li><a href="sobre-mi.html">About</a></li>
+        <li><a href="contacto.html">Contact</a></li>
+    </ul>
+
+ <!-- HERO SECTION -->
+<div class="section hero" id="hero">
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="vid/cae.mp4" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay"></div> <!-- Esto es para el fade -->
+</div>
+  
+  <!-- WORK 1 -->
+  <div class="section">
+    <div class="work-item">
+      <img src="img/cae1.jpeg" alt="1">
+    </div>
+    <div class="description">
+      <h2>Situacion "CAE"</h2>
+      <p style="opacity: 0.7; margin-top: 10px;">"Muchos estudiantes viven una realidad silenciosa:
+no tienen un espacio donde estudiar tranquilos, viven en ambientes ruidosos, trabajan todo el día, cargan dificultades de aprendizaje, o simplemente se sienten solos frente al estudio.
+La noche, para ellos, no es descanso: es la única hora para intentar avanzar.
+Pero sin un lugar seguro, acompañado y digno, estudiar se vuelve pesado, frustrante, desigual.
+
+En esa falta —esa ausencia de un espacio humano— nace la necesidad de algo nuevo."</p>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+
+  <!-- WORK 2 -->
+  <div class="section">
+    <div class="work-item">
+      <img src="img\cae2.jpg" alt="2">
+    </div>
+    <div class="description">
+      <h2>Tarea</h2>
+      <p style="opacity: 0.7; margin-top: 10px;">La tarea fue crear un espacio que no solo ofreciera un asiento y una mesa,
+sino un abrazo educativo.
+Un refugio donde alguien pudiera decir:
+“Acá podés estudiar, acá te acompañamos, acá no estás solo.”
+
+El CAE debía ser más que un proyecto:
+debía convertirse en un espacio accesible, seguro y cálido que respetara las distintas formas de aprender, que cuidara la salud emocional del estudiante y que defendiera, de verdad, la igualdad educativa.</p>
+    </div>
+  </div>
+
+  <!-- WORK 3 -->
+  <div class="section">
+    <div class="work-item">
+      <img src="img\cae3.jpg" alt="3">
+    </div>
+    <div class="description">
+      <h2>Acción</h2>
+      <p style="opacity: 0.7; margin-top: 10px;">Para lograrlo, se diseñó el Centro de Apoyo para Estudiantes (CAE):
+
+Un lugar nocturno pensado para estudiantes reales, con vidas reales.
+Ofrece comida, internet, duchas, descanso, apoyo académico y, sobre todo, acompañamiento humano.
+Un lugar donde estudiar se vuelve posible, donde la compañía transforma.
+
+Se creó una identidad visual que reflejara esto mismo:
+
+colores que transmiten contención, serenidad y noche
+
+formas suaves y accesibles
+
+tipografías claras, humanas y cercanas
+
+una mascota que simboliza apoyo emocional
+
+un diseño amable, inclusivo y sin rigideces
+
+Todo pensado para que el estudiante, al ver el logo o entrar al espacio, sienta:
+"Este lugar es para mí. Este lugar me entiende."</p>
+    </div>
+  </div>
+
+   <!-- WORK 3 -->
+  <div class="section">
+    <div class="work-item">
+      <img src="img\cae4.jpeg" alt="3">
+    </div>
+    <div class="description">
+      <h2>Resultado</h2>
+      <p style="opacity: 0.7; margin-top: 10px;">El CAE se convierte en un espacio que cambia vidas, porque no solo ofrece servicios: ofrece dignidad.
+Donde antes había estudiantes aislados, ahora hay comunidad.
+Donde antes había frustración, ahora hay compañía.
+Donde antes había desigualdad, ahora hay una oportunidad real de estudiar mejor.
+
+El CAE demuestra que estudiar en compañía transforma, porque cuando alguien te acompaña, estudiar deja de ser una carga y se convierte en un acto posible, humano y compartido.</p>
+    </div>
+  </div>
+
+<div class="back-wrap">
+    <a href="portfolio.html" class="btn-primary">Atrás</a>
+    <a href="Centro de Apoyo para Estudiantes.pdf" class="btn-primary" target="_blank">Ver PDF</a>
+</div>
+
+
+
+   <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <p>&copy; 2025 Portfolio. All rights reserved.</p>
+        </div>
+        <div class="footer-right">
+            <a href="aviso-legal.html">Legal</a>
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+            <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        </div>
+    </footer>
+  <!-- ============ LIGHTBOX (agrandar imagen) ============ -->
+  <div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" class="lightbox-img">
+  </div>
+
+  <!-- SCRIPTS -->
+   <script src="script.js"></script>
+  <script>
+    /* Scroll fade-in */
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(sec => observer.observe(sec));
+
+    /* Lightbox */
+    const workImages = document.querySelectorAll('.work-item img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+
+    workImages.forEach(img => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';
+        lightboxImg.src = img.src;
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.style.display = 'none';
+    });
+  </script>
+<script>
+  const tiltItems = document.querySelectorAll('.work-item');
+
+  tiltItems.forEach(item => {
+    const img = item.querySelector('img');
+
+    item.addEventListener('mousemove', (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * 10; // grados X
+      const rotateY = ((x - centerX) / centerX) * 10; // grados Y
+
+      img.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.1)`;
+      img.style.boxShadow = `${-rotateY*2}px ${rotateX*2}px 40px rgba(0,0,0,0.6)`;
+    });
+
+    item.addEventListener('mouseleave', () => {
+      img.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+      img.style.boxShadow = "0 20px 50px rgba(0,0,0,0.5)";
+    });
+  });
+
+</script>
+<script>
+  const hero = document.getElementById("hero");
+  const heroBg = hero.querySelector("::before");
+
+  // Tomar la imagen directamente del style inline del hero
+  const bgImage = hero.style.backgroundImage;
+
+  // Insertar la imagen dentro del pseudo-elemento
+  hero.style.setProperty("--hero-bg", bgImage);
+
+  // Aplicar la imagen al ::before
+  const stylesheet = document.styleSheets[0];
+  stylesheet.insertRule(`#hero::before { background-image: ${bgImage}; }`, stylesheet.cssRules.length);
+
+  // Scroll effect
+  window.addEventListener("scroll", () => {
+    let scroll = window.scrollY;
+    let blur = Math.min(scroll / 40, 15);   // BLUR MÁXIMO (15px)
+    let scale = 1 + scroll / 2000;          // ZOOM OUT suave
+    let opacity = Math.max(1 - scroll / 600, 0); // DESVANECER
+
+    hero.style.filter = `blur(${blur}px)`;
+    hero.style.transform = `scale(${scale})`;
+    hero.style.opacity = opacity;
+  });
+</script>
+</body>
+</html>

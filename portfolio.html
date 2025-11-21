@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Thiago</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="custom-cursor"></div>
+
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="nav-logo">
+            <a href="index.html">THIAGO</a>
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="portfolio.html" class="active">Portfolio</a></li>
+        <li><a href="sobre-mi.html">Sobre Mí</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+
+    <!-- Fullscreen horizontal slider like Hervin -->
+    <div class="portfolio-wrapper">
+        <button class="slider-nav prev" id="prevSlide">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+        </button>
+        <button class="slider-nav next" id="nextSlide">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+        </button>
+
+        <div class="slider-counter">
+            <span id="currentSlide">01</span> / <span id="totalSlides">06</span>
+        </div>
+
+    </section>
+        <div class="portfolio-slides-container" id="slidesContainer">
+            <!-- Slide 1 -->
+            <div class="portfolio-slide work-3d">
+                <div class="slide-bg work-item">
+                    <img src="img\portada.jpg" alt="Project 1">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-number">01</div>
+                    <h2 class="slide-title">Ilustraciones</h2>
+                     <a href="ilustraciones.html" class="btn-primary">Ver Ilustraciones</a>
+                </div>
+            </div>
+
+ <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+            <!-- Slide 2 -->
+            <div class="portfolio-slide work-3d">
+                   <div class="slide-bg work-item">
+                    <img src="img/packa1.jpg" alt="Project 2">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-number">02</div>
+                    <h2 class="slide-title">Packaging</h2>
+                     <a href="packaging.html" class="btn-primary">Ver Packaging</a>
+                </div>
+            </div>
+
+           <!-- Slide 3 -->
+<div class="portfolio-slide work-3d">
+    <div class="slide-bg work-item">
+        <video 
+            src="vid/vid2.mp4" 
+            autoplay 
+            loop 
+            muted 
+            playsinline 
+            class="slide-video">
+        </video>
+    </div>
+                <div class="slide-content">
+                    <div class="slide-number">03</div>
+                    <h2 class="slide-title">Señaletica</h2>
+                     <a href="señaletica.html" class="btn-primary">Ver Señaletica</a>
+                </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="portfolio-slide work-3d">
+                   <div class="slide-bg work-item">
+                    <img src="img/afiches.jpg" alt="Project 4">
+                </div>
+                <div class="slide-content">
+                    <div class="slide-number">04</div>
+                    <h2 class="slide-title">Afiches Publicitarios</h2>
+                     <a href="afiches.html" class="btn-primary">Ver Afiches Publicitarios</a>
+                </div>
+            </div>
+
+            <!-- Slide 5 -->
+          <div class="portfolio-slide work-3d">
+    <div class="slide-bg work-item">
+        <video 
+            src="vid/cae.mp4" 
+            autoplay 
+            loop 
+            muted 
+            playsinline 
+            class="slide-video">
+        </video>
+    </div>
+                <div class="slide-content">
+                    <div class="slide-number">05</div>
+                    <h2 class="slide-title">Identidad Visual</h2>
+                     <a href="identidad.html" class="btn-primary">Ver Identidad Visual</a>
+                </div>
+            </div>
+            
+<!-- SECCIÓN DINÁMICA DE PROYECTOS -->
+<section id="projectInfo" class="project-info hidden">
+    <div class="project-content">
+        <h2 id="projectTitle"></h2>
+        <p id="projectDescription"></p>
+        <img id="projectImage" alt="">
+    </div>
+</section>
+
+    <script src="script.js"></script>
+   <script>
+  const heroWork = document.querySelectorAll('.work-3d .work-item');
+
+  heroWork.forEach(item => {
+    const img = item.querySelector('img');
+
+    item.addEventListener('mousemove', (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * 10;
+      const rotateY = ((x - centerX) / centerX) * 10;
+
+      img.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+      img.style.boxShadow = `${-rotateY*2}px ${rotateX*2}px 50px rgba(0,0,0,0.6)`;
+    });
+
+    item.addEventListener('mouseleave', () => {
+      img.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+      img.style.boxShadow = "0 20px 50px rgba(0,0,0,0.5)";
+    });
+  });
+</script>
+
+</body>
+</html>

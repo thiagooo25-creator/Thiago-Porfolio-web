@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sobre Mí – Thiago</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+     @import 'tailwindcss';
+    @import 'tw-animate-css';
+    :root{
+      --bg:#0e0e0e;
+      --text:#ffffff;
+      --dim:#9b9b9b;
+      --accent:#00adb5;
+      --transition: all .55s cubic-bezier(.2,.9,.3,1);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;font-size:16px}
+    body{font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+    /* NAV (simple) */
+    .main-nav{position:fixed;top:0;left:0;width:100%;padding:20px 36px;display:flex;justify-content:space-between;align-items:center;z-index:1100}
+    .nav-logo a{text-decoration:none;color:var(--text);font-weight:600;letter-spacing:3px}
+    .menu-toggle{display:none} /* ocultado aquí para simplificar */
+
+    /* WRAP and background (subtle) */
+    .sobre-mi-wrap{position:relative;min-height:100vh;padding:140px 6vw 40px}
+    .bg-subtle{position:fixed;inset:0;background:linear-gradient(180deg, rgba(244, 242, 242, 0.02), rgba(254, 249, 249, 0));z-index:0;pointer-events:none}
+
+    /* ABOUT layout: image + text aligned same baseline and spacing */
+    .about-container{position:relative;z-index:2;max-width:1200px;margin:0 auto;display:flex;gap:56px;align-items:flex-start}
+    /* ensure both image and content start at same top baseline */
+    .about-image{flex:0 0 380px;margin-top:8px /* small tweak to sit visually aligned with title */;}
+    .about-image img{width:100%;height:460px;object-fit:cover;border-radius:16px;box-shadow:0 28px 80px rgba(86, 86, 86, 0.6);transition:transform .8s cubic-bezier(.2,.9,.3,1)}
+    .about-image img:hover{transform:translateY(-6px) scale(1.03);}
+
+    .about-content{flex:1;color:var(--text)}
+    .about-title{font-size:56px;font-weight:300;margin:6px 0 14px}
+    .about-lead{color:var(--dim);margin-bottom:18px;font-size:18px;max-width:800px}
+
+    /* MVV grid below, spacing matches the about block */
+    .mvv-wrapper{max-width:1200px;margin:56px auto 0;padding:0 6vw}
+    .mvv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+    .mvv-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:28px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(6px);transition:var(--transition);transform:translateY(16px);opacity:0}
+    .mvv-card.visible{transform:none;opacity:1}
+    .mvv-card:hover{transform:translateY(-12px);box-shadow:0 28px 60px rgba(126, 125, 125, 0.45)}
+    .mvv-card h3{font-size:22px;margin-bottom:8px}
+    .mvv-card p{color:var(--dim);line-height:1.6}
+
+    /* helpers: reveal */
+    .reveal{opacity:0;transform:translateY(28px);transition:var(--transition)}
+    .reveal.visible{opacity:1;transform:none}
+    .delay-1{transition-delay:.12s}
+    .delay-2{transition-delay:.26s}
+    .delay-3{transition-delay:.42s}
+
+    /* BUTTON "ATRÁS" aligned with grid and spacing */
+    .back-wrap{max-width:1200px;margin:44px auto 0;padding:0 6vw;text-align:center}
+    .btn-back{display:inline-block;padding:12px 20px;border-radius:10px;border:1px solid var(--text);color:var(--text);background:transparent;text-decoration:none;transition:var(--transition)}
+    .btn-back:hover{background:var(--text);color:#0e0e0e}
+
+    /* footer */
+    footer{margin-top:56px;padding:36px 6vw;border-top:1px solid rgba(255, 255, 255, 0.001);display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin-left:auto;margin-right:auto}
+    footer a{color:var(--dim);text-decoration:none}
+
+    /* responsive */
+    @media (max-width:980px){
+      .about-container{flex-direction:column;align-items:center;text-align:center}
+      .about-image img{height:380px;width:320px}
+      .mvv-grid{grid-template-columns:1fr}
+      footer{flex-direction:column;gap:12px;text-align:center}
+    }
+  </style>
+</head>
+<body>
+<!-- Simplified cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Preloader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-dots">
+                <span></span>
+                <span></span>
+                <span></span> 
+            </div>
+        </div>
+    </div>
+   <!-- Updated navigation with menu toggle -->
+    <nav class="main-nav">
+        <div class="nav-logo">
+            <a href="index.html">THIAGO</a>
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+  <!-- Fullscreen overlay menu -->
+    <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="active">Inicio</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="sobre-mi.html">Sobre Mí</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+
+  <div class="bg-subtle" aria-hidden="true"></div>
+
+  <main class="sobre-mi-wrap" id="sobre-mi-section">
+    <!-- ABOUT -->
+    <div class="about-container">
+      <div class="about-image reveal delay-1" id="photoBlock">
+        <img src="C:\Users\thiag\Downloads\Thiago Porfolio web\img\yo.jpg" alt="Foto de Thiago">
+      </div>
+
+      <div class="about-content">
+        <h1 class="about-title reveal delay-2">Hola, soy Thiago</h1>
+        <p class="about-lead reveal delay-3">Soy diseñador gráfico, pero antes que eso, soy alguien que observa. Me inspiro en los detalles: en las cosas que la gente siente, en lo que no se dice, en lo que las marcas quieren transmitir pero todavía no encuentran cómo. Mi trabajo nace de conectar con esas pequeñas emociones que vuelven único a cada proyecto.
+
+Diseñar para mí no es solo mover formas, elegir tipografías o buscar colores. Es escuchar, interpretar y transformar una idea en algo que haga sentir. Busco que cada diseño tenga alma, que diga algo, que genere un impacto real en quienes lo ven. No quiero que mis piezas sean solo “bonitas”: quiero que cuenten una historia.
+
+Creo en el diseño como un puente entre personas. En cada marca, en cada interfaz, en cada detalle visual, intento dejar un poco de esa sensibilidad que me mueve: claridad, intención y un toque humano que se note. Me importa que quien confíe en mí sienta que su proyecto se cuida con dedicación, paciencia y honestidad.
+
+Más allá de las herramientas, ofrezco mi forma de ver el mundo: cercana, observadora y siempre buscando hacer que cada idea encuentre su mejor versión.</p>
+       
+      </div>
+    </div>
+
+    <!-- MVV -->
+    <div class="mvv-wrapper">
+      <div class="mvv-grid">
+        <article class="mvv-card reveal delay-1" id="mvv1">
+          <h3>Mi Misión</h3>
+          <p>Crear piezas visuales que comuniquen con claridad y emoción.</p>
+        </article>
+
+        <article class="mvv-card reveal delay-2" id="mvv2">
+          <h3>Mi Visión</h3>
+          <p>Evolucionar hacia un estilo propio que combine estética y estrategia.</p>
+        </article>
+
+        <article class="mvv-card reveal delay-3" id="mvv3">
+          <h3>Mis Valores</h3>
+          <p>Creatividad, precisión, autenticidad y compromiso con la calidad.</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- BOTONES FINALES -->
+<div class="back-wrap">
+     <a href="index.html" class="btn-primary" style="margin-right:16px;">>Atrás</a> 
+    <a href="contacto.html" class="btn-primary">Contacto</a>
+</div>
+
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <p>&copy; 2025 Portfolio. All rights reserved.</p>
+        </div>
+        <div class="footer-right">
+            <a href="aviso-legal.html">Legal</a>
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+            <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+  <script>
+    // IntersectionObserver reveal for all .reveal elements (including image and cards)
+    const revealItems = Array.from(document.querySelectorAll('.reveal'));
+
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.28 });
+
+    revealItems.forEach(el => io.observe(el));
+
+    // Also reveal MVV cards when they come
+    const cards = document.querySelectorAll('.mvv-card');
+    cards.forEach(c => io.observe(c));
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
